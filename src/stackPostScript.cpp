@@ -190,15 +190,35 @@ void StackPostScript :: roll(long double n, long double j){
     if (vctrstack.size() < n) {
         throw std::runtime_error("Stack underflow: Not enough operands for roll."); 
     } 
+
     int m_n = static_cast<int>(n);
     int m_j = static_cast<int>(j);
-
+    std::deque<int> deque;
     int newRoll = m_j % m_n;
 
-    std :: vector<long double> tempStack;
-
-    for (int i = 0; i < m_j; i ++){
-        tempStack.push_back(vctrstack.back());
+    for (int i = 0; i < m_n; i ++){
+        deque.push_back(vctrstack.back());
         vctrstack.pop_back();
     }
+
+    if (newRoll < 0){
+        for (int i = newRoll; i < 0; i++){
+            deque.push_back(deque.front());
+            deque.pop_front();
+        }
+    }
+
+    else{
+        for (int i = 0; i < newRoll; i++){
+            deque.push_front(deque.back());
+            deque.pop_back();
+        }
+    }
+
+    for (int i = 0; i < m_n; i++){
+            vctrstack.push_back(deque.back());
+            deque.pop_back();
+    }
+
+    return;
 }
