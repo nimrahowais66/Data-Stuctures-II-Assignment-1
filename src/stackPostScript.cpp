@@ -1,4 +1,5 @@
 #include "../include/stackPostScript.hpp"
+#include <cmath>
 
 StackPostScript :: StackPostScript(){
     vctrstack;
@@ -53,6 +54,7 @@ void StackPostScript :: exch(){
 
 void StackPostScript :: push(long double item){
     vctrstack.push_back(item);
+    return;
 }
 
 long double StackPostScript :: pop(){
@@ -79,6 +81,7 @@ long double StackPostScript :: add(){
     long double b = pop();
     long double result = b + a;
     push(result);
+    return result;
 }
 
 long double StackPostScript :: subtract(){
@@ -89,6 +92,7 @@ long double StackPostScript :: subtract(){
     long double b = pop(); 
     long double result = b - a; 
     push(result); 
+    return result;
 }
 
 long double StackPostScript :: multiply(){
@@ -99,6 +103,7 @@ long double StackPostScript :: multiply(){
     long double b = pop(); 
     long double result = b * a; 
     push(result);
+    return result;
 }
 
 long double StackPostScript :: divide(){
@@ -109,6 +114,7 @@ long double StackPostScript :: divide(){
     long double b = pop(); 
     long double result = b / a; 
     push(result);
+    return result;
 }
 
 long double StackPostScript :: sin(){
@@ -119,6 +125,7 @@ long double StackPostScript :: sin(){
     a = a * (M_PI / 180.0);
     long double result = std::sin(a);
     push(result);
+    return result;
 }
 
 long double StackPostScript :: cos(){
@@ -129,10 +136,19 @@ long double StackPostScript :: cos(){
     a = a * (M_PI / 180.0);
     long double result = std::cos(a); 
     push(result);
+    return result;
 }
 
 long double StackPostScript :: atan(){ 
-    
+    if (vctrstack.size() < 1) {
+        throw std::runtime_error("Stack underflow: Not enough operands for atan."); 
+    }
+
+    long double number = vctrstack.back();
+    vctrstack.pop_back();
+    vctrstack.push_back(1 / (1 + (number * number)));
+    return vctrstack.back();
+
 }
 
 long double StackPostScript :: mod(){
@@ -143,6 +159,7 @@ long double StackPostScript :: mod(){
     long double b = pop(); 
     long double result = fmod(b, a); // fmod works for non integers as well unlike %
     push(result);
+    return result;
 }
 
 long double StackPostScript :: exp(){
@@ -153,6 +170,7 @@ long double StackPostScript :: exp(){
     long double b = pop(); 
     long double result = std::pow(b, a); 
     push(result);
+    return result;
 }
 
 long double StackPostScript :: sqrt(){
@@ -165,4 +183,22 @@ long double StackPostScript :: sqrt(){
     }
     long double result = std::sqrt(a); 
     push(result);
+    return result;
+}
+
+void StackPostScript :: roll(long double n, long double j){
+    if (vctrstack.size() < n) {
+        throw std::runtime_error("Stack underflow: Not enough operands for roll."); 
+    } 
+    int m_n = static_cast<int>(n);
+    int m_j = static_cast<int>(j);
+
+    int newRoll = m_j % m_n;
+
+    std :: vector<long double> tempStack;
+
+    for (int i = 0; i < m_j; i ++){
+        tempStack.push_back(vctrstack.back());
+        vctrstack.pop_back();
+    }
 }
