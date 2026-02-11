@@ -71,3 +71,98 @@ long double StackPostScript :: peek(){
     return vctrstack.back();
 }
 
+long double StackPostScript :: add(){
+    if (vctrstack.size() < 2) {
+        throw std::runtime_error("Stack underflow: Not enough operands for addition."); 
+    }
+    long double a = pop(); 
+    long double b = pop();
+    long double result = b + a;
+    push(result);
+}
+
+long double StackPostScript :: subtract(){
+    if (vctrstack.size() < 2) {
+        throw std::runtime_error("Stack underflow: Not enough operands for subtraction."); 
+    }
+    long double a = pop(); 
+    long double b = pop(); 
+    long double result = b - a; 
+    push(result); 
+}
+
+long double StackPostScript :: multiply(){
+    if (vctrstack.size() < 2) {
+        throw std::runtime_error("Stack underflow: Not enough operands for multiplication."); 
+    }
+    long double a = pop(); 
+    long double b = pop(); 
+    long double result = b * a; 
+    push(result);
+}
+
+long double StackPostScript :: divide(){
+    if (vctrstack.size() < 2) {
+        throw std::runtime_error("Stack underflow: Not enough operands for division."); 
+    }
+    long double a = pop(); 
+    long double b = pop(); 
+    long double result = b / a; 
+    push(result);
+}
+
+long double StackPostScript :: sin(){
+    if (vctrstack.size() < 1) {
+        throw std::runtime_error("Stack underflow: Not enough operands for sine."); 
+    }
+    long double a = pop(); 
+    a = a * (M_PI / 180.0);
+    long double result = std::sin(a);
+    push(result);
+}
+
+long double StackPostScript :: cos(){
+    if (vctrstack.size() < 1) {
+        throw std::runtime_error("Stack underflow: Not enough operands for cosine."); 
+    }
+    long double a = pop(); 
+    a = a * (M_PI / 180.0);
+    long double result = std::cos(a); 
+    push(result);
+}
+
+long double StackPostScript :: atan(){ 
+    
+}
+
+long double StackPostScript :: mod(){
+    if (vctrstack.size() < 2) {
+        throw std::runtime_error("Stack underflow: Not enough operands for modulo operation."); 
+    }
+    long double a = pop(); 
+    long double b = pop(); 
+    long double result = fmod(b, a); // fmod works for non integers as well unlike %
+    push(result);
+}
+
+long double StackPostScript :: exp(){
+    if (vctrstack.size() < 2) {
+        throw std::runtime_error("Stack underflow: Not enough operands for exponentiation."); 
+    }
+    long double a = pop(); 
+    long double b = pop(); 
+    long double result = std::pow(b, a); 
+    push(result);
+}
+
+long double StackPostScript :: sqrt(){
+    if (vctrstack.size() < 1) {
+        throw std::runtime_error("Stack underflow: Not enough operands for square root."); 
+    }
+    long double a = pop(); 
+    if (a < 0) {
+        throw std::runtime_error("Invalid input: Cannot compute square root of a negative number."); 
+    }
+    long double result = std::sqrt(a); 
+    push(result);
+}
