@@ -57,12 +57,14 @@ std::vector<std::string> str_split(std::string line) {
 
 // testing removeTrailingZeros
 int main() {
-    long double num = 000123.45000180000;
+    long double num = 000123.67010004969858000;
+    std :: cout << num << std :: endl; // Output: 123.450180000
     std::cout << removeTrailingZeros(123.450000) << std::endl; // Output: "123.45"
     std::cout << removeTrailingZeros(0.000000) << std::endl;   // Output:
     std::cout << removeTrailingZeros(100.1000000) << std::endl; // Output: "100"
-    std::cout << removeTrailingZeros(0.000001) << std::endl;   // Output: "0.000001"
+    std::cout << removeTrailingZeros(123.000001) << std::endl;   // Output: "0.000001"
     std::cout << removeTrailingZeros(00001.000000) << std::endl; // Output: "1"
     std::cout << removeTrailingZeros(num) << std::endl; // Output: "125.5900045"
+    // std::cout << sizeof(std::string);
     return 0;
 }
