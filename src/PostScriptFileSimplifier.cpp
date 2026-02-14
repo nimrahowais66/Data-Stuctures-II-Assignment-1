@@ -104,7 +104,3 @@ std::unordered_map<std::string, std::string> PostScriptFileSimplifier :: get_tok
     
     return tokensAndValues;
 }
-
-std::unordered_map<std::string, std::string> PostScriptFileSimplifier :: get_tokens() const{
-    
-}
