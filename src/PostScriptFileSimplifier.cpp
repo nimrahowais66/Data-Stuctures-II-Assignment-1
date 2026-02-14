@@ -23,9 +23,10 @@ PostScriptFileSimplifier::PostScriptFileSimplifier(std::string file) {
 }
 
 void PostScriptFileSimplifier::simplify_definitions() {
-    /*
-    Your implementation goes here
-    */
+    std::unordered_map<std::string, std::string> tokens = get_tokens();
+    replace_tokens(tokens);
+
+    return;
 }
 
 void PostScriptFileSimplifier::display_file() const {
@@ -128,34 +129,80 @@ void PostScriptFileSimplifier::evaluate_operations() {
         }
         // all operations of the line have been performed
         // now we replace the line with the items in the stack with the appropriate keywords
-        std::string new_line = "";
-        stack.reverseStack();
-        std::vector<std::string> keywords_in_line;
-        for (int m = 0; m < line_size; m++){
-            if (std::find(keywords.begin(), keywords.end(), split_line[m]) != keywords.end()){
-                keywords_in_line.push_back(split_line[m]);
-            }
-        }
-        for (int n = 0; n < keywords_in_line.size(); n++) {
-            int num_args = keywords[keywords_in_line[n]];
-            for (int p = 0; p < num_args; p++){
-                if (!stack.is_empty()) {
-                    new_line += removeTrailingZeros(stack.pop()) + " ";
+        if (operation_found) {
+            std::string new_line = "";
+            stack.reverseStack();
+            std::vector<std::string> keywords_in_line;
+            for (int m = 0; m < line_size; m++){
+                if (keywords.find(split_line[m]) != keywords.end()){
+                    keywords_in_line.push_back(split_line[m]);
                 }
             }
-            new_line += keywords_in_line[n] + " ";
+            for (int n = 0; n < keywords_in_line.size(); n++) {
+                int num_args = keywords[keywords_in_line[n]];
+                for (int p = 0; p < num_args; p++){
+                    if (!stack.is_empty()) {
+                        new_line += removeTrailingZeros(stack.pop()) + " ";
+                    }
+                }
+                new_line += keywords_in_line[n] + " ";
+            }
+            fileContents[i] = new_line;
         }
-        fileContents[i] = new_line;
     }
 }
 
 void PostScriptFileSimplifier::replace_tokens(
     std::unordered_map<std::string, std::string>& tokens) {
-    /*
-    Your implementation goes here
-    */
+    int length = fileContents.size();
+    std :: vector<std :: string> lineVector;
+    std :: string newLine = "";
+
+    for (int i = 0; i < length; i++){
+        lineVector = str_split(fileContents[i]);
+        int lineLength = lineVector.size();
+
+        if (lineVector[lineVector.size() -1] != "def"){
+
+            for(int j = 0; j < lineLength; j++){
+                auto pos = tokens.find(lineVector[j]);
+                if(pos != tokens.end()){
+                    lineVector[j] = pos->second;
+                }
+
+            }
+        }
+
+        for(int k = 0; k < lineLength; k++){
+            newLine.append(lineVector[k]);
+            if(k < lineLength - 2){ newLine.append(" ");}
+        } 
+
+        fileContents[i] = newLine;
+    }
+
+    return;
 }
 
 std::unordered_map<std::string, std::string> PostScriptFileSimplifier :: get_tokens() const{
+    std::unordered_map<std::string, std :: string> tokensAndValues;
+    std :: string token = "";
+    std :: string value = "";
+    int length = fileContents.size();
+    std :: vector<std :: string> lineVector;
+
+    for(int i = 0; i < length; i++){
+        lineVector = str_split(fileContents[i]);
+        int lineLength = lineVector.size();
+        if (lineVector.back() == "def"){
+            token = lineVector[0]; 
+            for (int j = 1; j < lineLength - 1; j++){
+                value.append(lineVector[j]);
+                if (j < lineLength - 2){ value.append(" ");}
+            }
+            tokensAndValues.insert({token, value});
+        }
+    }
     
+    return tokensAndValues;
 }

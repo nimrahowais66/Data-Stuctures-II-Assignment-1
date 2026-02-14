@@ -84,7 +84,7 @@ int main(){
         std::cout << myVector[i] << " ";
     }
     std::cout << std::endl;
-
+    std :: cout<< myVector.back() << std :: endl;
     return 0;
 
 }
