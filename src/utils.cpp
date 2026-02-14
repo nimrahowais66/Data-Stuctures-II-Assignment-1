@@ -34,6 +34,7 @@ std::string removeTrailingZeros(long double number) {
 
 std::vector<std::string> str_split(std::string line) {
     std::vector<std::string> output;
+    std :: string substring;
     int length = line.length();
     char* word;
     int count = 0;
@@ -41,10 +42,34 @@ std::vector<std::string> str_split(std::string line) {
 
     while(line != ""){
         index  = line.find(' ');
-        if(index == 0){ line = line.substr(1, length - 1); length--;}
-        else if(index == -1){output.push_back(line); line = "";}
-        else{ output.push_back(line.substr(0, index)); line = line.substr(index, length - index); 
-                                                                        length = length - index;}
+        if(index == 0){ 
+            line = line.substr(1, length - 1); 
+            length--;
+        }
+
+        else if(index == -1){
+            if (line[0] == '/' || line[0] == '{')
+                line = line.substr(1, line.size() - 1);
+            
+            if (line[line.size() - 1] == '}')
+                line = line.substr(0, line.size() - 1);
+
+            output.push_back(line);
+            line = "";
+        }
+
+        else{
+            substring = line.substr(0, index);
+            if (substring[0] == '/' || substring[0] == '{')
+                substring = substring.substr(1, substring.size() - 1);
+            
+            if (substring[substring.size() - 1] == '}')
+                substring = substring.substr(0, substring.size() - 1);
+            
+            output.push_back(substring); 
+            line = line.substr(index, length - index); 
+            length = length - index;
+        }
     }
 
     return output;
