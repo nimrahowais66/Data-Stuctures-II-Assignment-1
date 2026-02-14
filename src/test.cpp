@@ -78,7 +78,7 @@ int main(){
     std :: cout << myStack.subtract()  << std :: endl;;
     print(myStack);
 
-    std::vector<std::string> myVector = str_split("/hello  {sin cos tan} am samia.");
+    std::vector<std::string> myVector = str_split("hello      i am samia.");
     std::cout << "Vector elements: ";
     for (size_t i = 0; i < myVector.size(); ++i) {
         std::cout << myVector[i] << " ";
