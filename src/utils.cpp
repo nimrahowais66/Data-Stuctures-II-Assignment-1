@@ -35,34 +35,29 @@ std::string removeTrailingZeros(long double number) {
 std::vector<std::string> str_split(std::string line) {
     std::vector<std::string> output;
     int length = line.length();
-    int start = 0;
+    char* word;
     int count = 0;
+    int index = 0;
 
-    for(int i = 0; i < length; i++){
-        if (line[0] == ' '){ start = 1; }
-        else{
-            if (line[i] == ' ' || i == length - 1){
-                output.push_back(line.substr(start, count));
-                start = i + 1;
-                count = 0;
-            } 
-            else{
-                count++;
-            }
-        }
+    while(line != ""){
+        index  = line.find(' ');
+        if(index == 0){ line = line.substr(1, length - 1); length--;}
+        else if(index == -1){output.push_back(line); line = "";}
+        else{ output.push_back(line.substr(0, index)); line = line.substr(index, length - index); 
+                                                                        length = length - index;}
     }
 
     return output;
 }
 
 // testing removeTrailingZeros
-int main() {
-    long double num = 000123.45000180000;
-    std::cout << removeTrailingZeros(123.450000) << std::endl; // Output: "123.45"
-    std::cout << removeTrailingZeros(0.000000) << std::endl;   // Output:
-    std::cout << removeTrailingZeros(100.1000000) << std::endl; // Output: "100"
-    std::cout << removeTrailingZeros(0.000001) << std::endl;   // Output: "0.000001"
-    std::cout << removeTrailingZeros(00001.000000) << std::endl; // Output: "1"
-    std::cout << removeTrailingZeros(num) << std::endl; // Output: "125.5900045"
-    return 0;
-}
+// int main() {
+//     long double num = 000123.45000180000;
+//     std::cout << removeTrailingZeros(123.450000) << std::endl; // Output: "123.45"
+//     std::cout << removeTrailingZeros(0.000000) << std::endl;   // Output:
+//     std::cout << removeTrailingZeros(100.1000000) << std::endl; // Output: "100"
+//     std::cout << removeTrailingZeros(0.000001) << std::endl;   // Output: "0.000001"
+//     std::cout << removeTrailingZeros(00001.000000) << std::endl; // Output: "1"
+//     std::cout << removeTrailingZeros(num) << std::endl; // Output: "125.5900045"
+//     return 0;
+// }
