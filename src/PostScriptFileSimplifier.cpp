@@ -129,6 +129,7 @@ void PostScriptFileSimplifier::evaluate_operations() {
         }
         // all operations of the line have been performed
         // now we replace the line with the items in the stack with the appropriate keywords
+<<<<<<< Nimrah
         if (operation_found) {
             std::string new_line = "";
             stack.reverseStack();
@@ -149,6 +150,26 @@ void PostScriptFileSimplifier::evaluate_operations() {
             }
             fileContents[i] = new_line;
         }
+=======
+        std::string new_line = "";
+        stack.reverseStack();
+        std::vector<std::string> keywords_in_line;
+        for (int m = 0; m < line_size; m++){
+            if (std::find(keywords.begin(), keywords.end(), split_line[m]) != keywords.end()){
+                keywords_in_line.push_back(split_line[m]);
+            }
+        }
+        for (int n = 0; n < keywords_in_line.size(); n++) {
+            int num_args = keywords[keywords_in_line[n]];
+            for (int p = 0; p < num_args; p++){
+                if (!stack.is_empty()) {
+                    new_line += removeTrailingZeros(stack.pop()) + " ";
+                }
+            }
+            new_line += keywords_in_line[n] + " ";
+        }
+        fileContents[i] = new_line;
+>>>>>>> main
     }
 }
 
